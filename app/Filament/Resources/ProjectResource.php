@@ -58,10 +58,16 @@ final class ProjectResource extends Resource
 
                 Section::make('Upsell Lehetőségek')
                     ->schema([
-                        Repeater::make('upsellCategories')
+                        Repeater::make('upsell_categories')
                             ->label('Upsell Lehetőségek')
                             ->schema([
                                 TextInput::make('name')->required()->label('Név'),
+                                Select::make('status')
+                                    ->options([
+                                        'Lehetőség' => 'Lehetőség', 'Van' => 'Van', 'Később' => 'Később', 'Nem kell' => 'Nem kell',
+                                    ])->required()->default('Lehetőség'),
+                                Textarea::make('notes')->label('Megjegyzés')->columnSpanFull(),
+
                             ])
                             ->columns(2)
                             ->label(''),
