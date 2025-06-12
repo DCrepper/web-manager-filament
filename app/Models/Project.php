@@ -21,4 +21,9 @@ final class Project extends Model
     {
         return $this->hasMany(UpsellCategory::class);
     }
+
+    public function upsells(): HasMany
+    {
+        return $this->hasMany(Upsell::class);
+    }
 }

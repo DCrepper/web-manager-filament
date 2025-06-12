@@ -8,6 +8,7 @@ use App\Filament\Resources\ProjectResource\Pages\CreateProject;
 use App\Filament\Resources\ProjectResource\Pages\EditProject;
 use App\Filament\Resources\ProjectResource\Pages\ListProjects;
 use App\Models\Project;
+use App\Models\UpsellCategory;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Repeater;
@@ -22,7 +23,11 @@ use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\Summarizers\Average;
+use Filament\Tables\Columns\Summarizers\Range;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 final class ProjectResource extends Resource
@@ -58,19 +63,34 @@ final class ProjectResource extends Resource
 
                 Section::make('Upsell Lehetőségek')
                     ->schema([
-                        Repeater::make('upsell_categories')
-                            ->label('Upsell Lehetőségek')
+                        Repeater::make('upsells')
+                            ->relationship('upsells')
                             ->schema([
-                                TextInput::make('name')->required()->label('Név'),
+                                Select::make('upsell_category_id')
+                                    ->label('Upsell Kategória')
+                                    ->options(fn () => UpsellCategory::all()->pluck('name', 'id'))
+                                    ->required(),
+                                TextInput::make('description')
+                                    ->label('Leírás')
+                                    ->maxLength(255),
+                                TextInput::make('price')
+                                    ->required()
+                                    ->label('Ár')
+                                    ->postfix('Ft')
+                                    ->numeric(),
                                 Select::make('status')
                                     ->options([
-                                        'Lehetőség' => 'Lehetőség', 'Van' => 'Van', 'Később' => 'Később', 'Nem kell' => 'Nem kell',
-                                    ])->required()->default('Lehetőség'),
-                                Textarea::make('notes')->label('Megjegyzés')->columnSpanFull(),
-
+                                        'Lehetőség' => 'Lehetőség',
+                                        'Van' => 'Van',
+                                        'Később' => 'Később',
+                                        'Nem kell' => 'Nem kell',
+                                    ])
+                                    ->default('Lehetőség')
+                                    ->required(),
                             ])
-                            ->columns(2)
-                            ->label(''),
+                            ->columns(4)
+                            ->addActionLabel('Új Upsell hozzáadása')
+                            ->label('Upsell Lehetőségek'),
                     ]),
             ]);
 
@@ -81,35 +101,101 @@ final class ProjectResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('company_name')
+                    ->label('Cég neve')
                     ->searchable(),
                 TextColumn::make('website_url')
+                    ->label('Weboldal URL')
                     ->searchable(),
                 TextColumn::make('last_update_date')
+                    ->label('Utolsó frissítés')
                     ->date()
                     ->sortable(),
                 TextColumn::make('next_update_date')
+                    ->label('Következő frissítés')
                     ->date()
                     ->sortable(),
-                TextColumn::make('update_frequency'),
+                TextColumn::make('update_frequency')
+                    ->label('Frissítés gyakorisága'),
                 IconColumn::make('contract_status')
+                    ->label('Szerződés státusz')
                     ->boolean(),
                 TextColumn::make('contract_amount')
+                    ->label('Szerződés összege')
                     ->numeric()
+                    ->summarize([
+                        Average::make(),
+                        Range::make(),
+                    ])
                     ->sortable(),
                 TextColumn::make('currency')
+                    ->label('Valuta')
                     ->searchable(),
                 TextColumn::make('created_at')
+                    ->label('Létrehozva')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label('Módosítva')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
-            ])
+                /* */
+
+                SelectFilter::make('update_frequency')
+                    ->options([
+                        'heti' => 'Heti',
+                        'kétheti' => 'Kétheti',
+                        'havi' => 'Havi',
+                        'negyedéves' => 'Negyedéves',
+                        'igény szerint' => 'Igény szerint',
+                    ])
+                    ->label('Frissítés gyakorisága'),
+                SelectFilter::make('contract_status')
+                    ->options([
+                        true => 'Érvényes szerződés',
+                        false => 'Nincs érvényes szerződés',
+                    ])
+                    ->label('Szerződés státusz'),
+                SelectFilter::make('last_update_date')
+                    ->options([
+                        'today' => 'Ma',
+                        'this_week' => 'Ezen a héten',
+                        'this_month' => 'Ebben a hónapban',
+                        'last_month' => 'Múlt hónapban',
+                    ])
+                    ->query(function ($query, $state) {
+                        return match ($state['value'] ?? null) {
+                            'today' => $query->whereDate('last_update_date', today()),
+                            'this_week' => $query->whereBetween('last_update_date', [now()->startOfWeek(), now()->endOfWeek()]),
+                            'this_month' => $query->whereBetween('last_update_date', [now()->startOfMonth(), now()->endOfMonth()]),
+                            'last_month' => $query->whereBetween('last_update_date', [now()->subMonth()->startOfMonth(), now()->subMonth()->endOfMonth()]),
+                            default => $query,
+                        };
+                    })
+                    ->label('Utolsó frissítés'),
+                SelectFilter::make('next_update_date')
+                    ->options([
+                        'today' => 'Ma',
+                        'this_week' => 'Ezen a héten',
+                        'this_month' => 'Ebben a hónapban',
+                        'overdue' => 'Lejárt',
+                    ])
+                    ->query(function ($query, $state) {
+                        return match ($state['value'] ?? null) {
+                            'today' => $query->whereDate('next_update_date', today()),
+                            'this_week' => $query->whereBetween('next_update_date', [now()->startOfWeek(), now()->endOfWeek()]),
+                            'this_month' => $query->whereBetween('next_update_date', [now()->startOfMonth(), now()->endOfMonth()]),
+                            'overdue' => $query->where('next_update_date', '<', today()),
+                            default => $query,
+                        };
+                    })
+                    ->label('Következő frissítés'),
+
+            ], layout: FiltersLayout::AboveContent)
+            ->defaultSort('created_at', 'desc')
             ->actions([
                 EditAction::make(),
             ])
