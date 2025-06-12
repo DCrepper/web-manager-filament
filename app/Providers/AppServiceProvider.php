@@ -25,13 +25,13 @@ final class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
-        FileUpload::configureUsing(fn (FileUpload $fileUpload) => $fileUpload
+        FileUpload::configureUsing(fn (FileUpload $fileUpload): FileUpload => $fileUpload
             ->visibility('public'));
 
-        ImageColumn::configureUsing(fn (ImageColumn $imageColumn) => $imageColumn
+        ImageColumn::configureUsing(fn (ImageColumn $imageColumn): ImageColumn => $imageColumn
             ->visibility('public'));
 
-        ImageEntry::configureUsing(fn (ImageEntry $imageEntry) => $imageEntry
+        ImageEntry::configureUsing(fn (ImageEntry $imageEntry): ImageEntry => $imageEntry
             ->visibility('public'));
     }
 }
