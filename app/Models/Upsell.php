@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 
 final class Upsell extends Model
@@ -17,12 +18,12 @@ final class Upsell extends Model
         'status',
     ];
 
-    public function project()
+    public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
     }
 
-    public function upsellCategory()
+    public function upsellCategory(): BelongsTo
     {
         return $this->belongsTo(UpsellCategory::class);
     }

@@ -14,7 +14,9 @@ final class Project extends Model
     protected $casts = [
         'next_update_date' => 'date',
         'last_update_date' => 'date',
-        'upsell_categories' => 'array',
+        'contract_amount' => 'integer',
+        'upsells' => 'array',
+        'marketing' => 'array',
     ];
 
     public function upsellCategories(): HasMany
@@ -25,5 +27,10 @@ final class Project extends Model
     public function upsells(): HasMany
     {
         return $this->hasMany(Upsell::class);
+    }
+
+    public function marketing(): HasMany
+    {
+        return $this->hasMany(Marketing::class);
     }
 }

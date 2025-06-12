@@ -25,7 +25,7 @@ return new class extends Migration
             $table->decimal('contract_amount', 10, 2)->nullable();
             $table->string('currency', 3)->default('HUF');
             $table->text('notes')->nullable();
-            $table->json('upsell_categories')->nullable();
+            $table->json('upsells')->nullable();
             $table->timestamps();
 
         });

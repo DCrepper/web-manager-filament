@@ -7,6 +7,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ProjectResource\Pages\CreateProject;
 use App\Filament\Resources\ProjectResource\Pages\EditProject;
 use App\Filament\Resources\ProjectResource\Pages\ListProjects;
+use App\Models\MarketingCategory;
 use App\Models\Project;
 use App\Models\UpsellCategory;
 use Filament\Forms\Components\DatePicker;
@@ -29,6 +30,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Support\Number;
 
 final class ProjectResource extends Resource
 {
@@ -92,6 +94,52 @@ final class ProjectResource extends Resource
                             ->addActionLabel('Új Upsell hozzáadása')
                             ->label('Upsell Lehetőségek'),
                     ]),
+
+                Section::make('Marketing')
+                    ->schema([
+                        Repeater::make('marketing')
+                            ->relationship('marketing')
+                            ->schema([
+                                Select::make('marketing_category_id')
+                                    ->label('Marketing Kategória')
+                                    ->options(fn () => MarketingCategory::all()->pluck('name', 'id'))
+                                    ->required(),
+                                TextInput::make('monthly_management_fee')
+                                    ->label('Havi kezelési díj')
+                                    ->numeric()
+                                    ->postfix('Ft'),
+                                TextInput::make('advertising_cost')
+                                    ->label('Hirdetési költség')
+                                    ->numeric()
+                                    ->postfix('Ft'),
+                                Select::make('advertising_payer')
+                                    ->label('Hirdetés fizető')
+                                    ->options([
+                                        'client' => 'Ügyfél',
+                                        'cegem360' => 'Cegem360',
+                                    ]),
+                                TextInput::make('post_frequency')
+                                    ->label('Poszt gyakoriság')
+                                    ->maxLength(255),
+                                Textarea::make('notes')
+                                    ->label('Megjegyzések')
+                                    ->maxLength(1000),
+                                DatePicker::make('order_date')
+                                    ->label('Megrendelés dátuma'),
+                                Select::make('status')
+                                    ->label('Státusz')
+                                    ->options([
+                                        'active' => 'Aktív',
+                                        'closed' => 'Lezárt',
+                                    ])
+                                    ->default('active')
+                                    ->required(),
+                            ])
+                            ->columns(3)
+                            ->addActionLabel('Új Marketing szolgáltatás hozzáadása')
+                            ->label('Marketing szolgáltatások'),
+                    ]),
+
             ]);
 
     }
@@ -121,7 +169,7 @@ final class ProjectResource extends Resource
                     ->boolean(),
                 TextColumn::make('contract_amount')
                     ->label('Szerződés összege')
-                    ->numeric()
+                    ->formatStateUsing(fn ($state) => Number::currency($state, 'HUF', 'hu_HU', 0))
                     ->summarize([
                         Average::make(),
                         Range::make(),

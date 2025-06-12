@@ -12,7 +12,7 @@ final class StatsOverview extends BaseWidget
 {
     protected function getStats(): array
     {
-        $vanStatusCount = Project::all()->pluck('upsell_categories')->flatten()->where('status', 'Van')->count();
+        $vanStatusCount = Project::all()->pluck('upsells')->flatten()->where('status', 'Van')->count();
 
         return [
             Stat::make('Aktív Projektek', Project::where('contract_status', true)->count())
