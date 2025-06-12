@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Models\MarketingCategory;
 use App\Models\UpsellCategory;
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 final class DatabaseSeeder extends Seeder
@@ -53,6 +54,21 @@ final class DatabaseSeeder extends Seeder
         UpsellCategory::create([
             'name' => 'Egyedi fejlesztések',
         ]);
+
+        $mediaCategories = [
+            'Google Ads',
+            'Facebook',
+            'Instagram',
+            'LinkedIn',
+            'Hírlevél',
+            'Optimalizálás',
+        ];
+
+        foreach ($mediaCategories as $category) {
+            MarketingCategory::create([
+                'name' => $category,
+            ]);
+        }
 
     }
 }
