@@ -110,6 +110,11 @@ final class UpsellResource extends Resource
                     ])
                     ->attribute('status')
                     ->label('Upsell Státusz'),
+                SelectFilter::make('upsellCategory')
+                    ->options(UpsellCategory::all()->pluck('name', 'id'))
+                    ->relationship('upsellCategory', 'name')
+                    ->attribute('upsellCategory')
+                    ->label('Upsell Kategória'),
             ], layout: FiltersLayout::AboveContent)
             ->actions([
                 EditAction::make(),
