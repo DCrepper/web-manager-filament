@@ -2,11 +2,12 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteBulkAction;
 use App\Filament\Resources\UpsellCategoryResource\Pages\ListUpsellCategories;
 use App\Filament\Resources\UpsellCategoryResource\Pages\CreateUpsellCategory;
 use App\Filament\Resources\UpsellCategoryResource\Pages\EditUpsellCategory;
@@ -14,7 +15,6 @@ use App\Filament\Resources\UpsellCategoryResource\Pages;
 use App\Filament\Resources\UpsellCategoryResource\RelationManagers;
 use App\Models\UpsellCategory;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -25,12 +25,12 @@ class UpsellCategoryResource extends Resource
 {
     protected static ?string $model = UpsellCategory::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 TextInput::make('name')
                     ->required()
                     ->maxLength(255),
@@ -55,10 +55,10 @@ class UpsellCategoryResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
+            ->recordActions([
                 EditAction::make(),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

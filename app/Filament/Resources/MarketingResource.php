@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
 use App\Filament\Resources\MarketingResource\Pages\CreateMarketing;
 use App\Filament\Resources\MarketingResource\Pages\EditMarketing;
 use App\Filament\Resources\MarketingResource\Pages\ListMarketings;
@@ -12,11 +16,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\Summarizers\Average;
 use Filament\Tables\Columns\Summarizers\Range;
 use Filament\Tables\Columns\TextColumn;
@@ -29,12 +29,12 @@ final class MarketingResource extends Resource
 {
     protected static ?string $model = Marketing::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Select::make('project_id')
                     ->relationship('project', 'company_name')
                     ->required(),
@@ -143,10 +143,10 @@ final class MarketingResource extends Resource
                         'cegem360' => 'Cegem360',
                     ]),
             ], layout: FiltersLayout::AboveContent)
-            ->actions([
+            ->recordActions([
                 EditAction::make(),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
