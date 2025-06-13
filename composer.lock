@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c5bd64d6b6b17022691f593c19d80731",
+    "content-hash": "032a24dafffd1b33b483adcf39aec697",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -8423,46 +8423,6 @@
                 }
             ],
             "time": "2024-08-06T10:04:20+00:00"
-        },
-        {
-            "name": "filament/upgrade",
-            "version": "v4.0.0-beta2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/filamentphp/upgrade.git",
-                "reference": "1865359088bbdcff0fe56d6ec2fc5e07463a490e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/upgrade/zipball/1865359088bbdcff0fe56d6ec2fc5e07463a490e",
-                "reference": "1865359088bbdcff0fe56d6ec2fc5e07463a490e",
-                "shasum": ""
-            },
-            "require": {
-                "nunomaduro/termwind": "^2.0",
-                "php": "^8.2",
-                "rector/rector": "^2.0"
-            },
-            "bin": [
-                "bin/filament-v4"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Filament\\Upgrade\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Upgrade Filament v3 code to Filament v4.",
-            "homepage": "https://github.com/filamentphp/filament",
-            "support": {
-                "issues": "https://github.com/filamentphp/filament/issues",
-                "source": "https://github.com/filamentphp/filament"
-            },
-            "time": "2025-06-11T15:42:31+00:00"
         },
         {
             "name": "filp/whoops",
