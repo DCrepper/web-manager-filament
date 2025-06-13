@@ -48,6 +48,7 @@ final class ProjectResource extends Resource
         return $schema
             ->components([
                 Section::make('Alapadatok')
+                    ->columnSpanFull()
                     ->schema([
                         Grid::make(2)->schema([
                             TextInput::make('company_name')->required()->label('Cég neve'),
@@ -65,6 +66,7 @@ final class ProjectResource extends Resource
                     ])->columns(2),
 
                 Section::make('Upsell Lehetőségek')
+                    ->columnSpanFull()
                     ->schema([
                         Repeater::make('upsells')
                             ->relationship('upsells')
@@ -97,6 +99,7 @@ final class ProjectResource extends Resource
                     ]),
 
                 Section::make('Marketing')
+                    ->columnSpanFull()
                     ->schema([
                         Repeater::make('marketing')
                             ->relationship('marketing')
