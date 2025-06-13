@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('hosting_info')->nullable();
             $table->date('last_update_date')->nullable();
             $table->date('next_update_date');
-            $table->enum('update_frequency', ['heti', 'kétheti', 'havi', 'negyedéves', 'igény szerint'])->nullable();
+            $table->enum('update_frequency', ['heti', 'kétheti', 'havi', 'negyedéves', 'féléves', 'éves', 'igény szerint'])->nullable();
             $table->boolean('contract_status')->default(false);
             $table->decimal('contract_amount', 10, 2)->nullable();
             $table->string('currency', 3)->default('HUF');
