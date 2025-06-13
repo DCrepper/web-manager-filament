@@ -58,7 +58,7 @@ final class ProjectResource extends Resource
                         DatePicker::make('next_update_date')->required()->label('Következő frissítés'),
                         Select::make('update_frequency')->label('Frissítés gyakorisága')
                             ->options([
-                                'heti' => 'Heti', 'kétheti' => 'Kétheti', 'havi' => 'Havi', 'negyedéves' => 'Negyedéves', 'igény szerint' => 'Igény szerint',
+                                'heti' => 'Heti', 'kétheti' => 'Kétheti', 'havi' => 'Havi', 'negyedéves' => 'Negyedéves', 'féléves' => 'Féléves', 'éves' => 'Éves', 'igény szerint' => 'Igény szerint',
                             ]),
                         TextInput::make('contract_amount')->numeric()->prefix('Ft')->label('Szerződés összege'),
                         Toggle::make('contract_status')->label('Érvényes szerződés'),
