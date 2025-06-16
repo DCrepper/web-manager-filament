@@ -53,7 +53,7 @@ final class UpsellImporter extends Importer
 
         return Upsell::firstOrNew([
             'project_id' => $project->id,
-            'upsell_category_id' => $project->upsell_category_id,
+            'upsell_category_id' => $this->data['upsell_category_id'],
         ]);
     }
 }
