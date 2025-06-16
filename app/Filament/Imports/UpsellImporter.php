@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Filament\Imports;
 
-use App\Models\Project;
 use App\Models\Upsell;
-use Filament\Actions\Imports\ImportColumn;
-use Filament\Actions\Imports\Importer;
-use Filament\Actions\Imports\Models\Import;
+use App\Models\Project;
+use App\Models\UpsellCategory;
 use Illuminate\Support\Number;
+use Filament\Actions\Imports\Importer;
+use Filament\Actions\Imports\ImportColumn;
+use Filament\Actions\Imports\Models\Import;
 
 final class UpsellImporter extends Importer
 {
@@ -50,10 +51,12 @@ final class UpsellImporter extends Importer
     {
         $project = Project::where('website_url', $this->data['project'])
             ->firstOrFail();
+        $upsellCategory = UpsellCategory::where('name', $this->data['upsellCategory'])
+            ->firstOrFail();
 
         return Upsell::firstOrNew([
             'project_id' => $project->id,
-            'upsell_category_id' => $this->data['upsell_category_id'],
+            'upsell_category_id' => $upsellCategory->id,
         ]);
     }
 }
