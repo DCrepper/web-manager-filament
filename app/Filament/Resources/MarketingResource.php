@@ -14,7 +14,6 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ExportAction;
-use Filament\Actions\Exports\Models\Export;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -160,8 +159,8 @@ final class MarketingResource extends Resource
                     ->label('Marketing exportálása')
                     ->icon('heroicon-o-download')
                     ->exporter(MarketingExporter::class)
-                    ->successNotificationTitle('Sikeres exportálás')
-                    ->successNotificationBody(fn (Export $export) => MarketingExporter::getCompletedNotificationBody($export)),
+                    ->successNotificationTitle('Sikeres exportálás'),
+
             ])
             ->defaultSort('created_at', 'desc');
     }

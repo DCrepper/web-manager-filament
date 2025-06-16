@@ -17,9 +17,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ExportAction;
-use Filament\Actions\Exports\Models\Export;
 use Filament\Actions\ImportAction;
-use Filament\Actions\Imports\Models\Import;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
@@ -297,14 +295,14 @@ final class ProjectResource extends Resource
                     ->label('Projekt importálása')
                     ->icon('heroicon-o-upload')
                     ->importer(ProjectImporter::class)
-                    ->successNotificationTitle('Sikeres importálás')
-                    ->successNotificationBody(fn (Import $import) => ProjectImporter::getCompletedNotificationBody($import)),
+                    ->successNotificationTitle('Sikeres importálás'),
+
                 ExportAction::make()
                     ->label('Projekt exportálása')
                     ->icon('heroicon-o-download')
                     ->exporter(ProjectExporter::class)
-                    ->successNotificationTitle('Sikeres exportálás')
-                    ->successNotificationBody(fn (Export $export) => ProjectExporter::getCompletedNotificationBody($export)),
+                    ->successNotificationTitle('Sikeres exportálás'),
+
             ]);
     }
 
