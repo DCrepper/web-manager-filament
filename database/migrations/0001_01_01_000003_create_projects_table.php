@@ -15,11 +15,14 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table): void {
             $table->id();
-            $table->string('company_name');
+            $table->string('company_name')->nullable();
             $table->string('website_url');
             $table->text('hosting_info')->nullable();
+            $table->enum('website_type', ['weboldal', 'webshop'])->nullable();
+            $table->string('industry')->nullable();
+            $table->enum('classification', ['U1', 'U2', 'U3', 'U4'])->default('U1');
             $table->date('last_update_date')->nullable();
-            $table->date('next_update_date');
+            $table->date('next_update_date')->nullable();
             $table->enum('update_frequency', ['heti', 'kétheti', 'havi', 'negyedéves', 'féléves', 'éves', 'igény szerint'])->nullable();
             $table->boolean('contract_status')->default(false);
             $table->decimal('contract_amount', 10, 2)->nullable();

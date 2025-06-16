@@ -46,6 +46,7 @@ final class ProjectResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
                 Section::make('Alapadatok')
                     ->columnSpanFull()
@@ -54,6 +55,24 @@ final class ProjectResource extends Resource
                             TextInput::make('company_name')->required()->label('Cég neve'),
                             TextInput::make('website_url')->required()->url()->label('Weboldal URL'),
                         ]),
+                        Select::make('website_type')
+                            ->options([
+                                'weboldal' => 'Weboldal',
+                                'webshop' => 'Webshop',
+                            ])
+                            ->required()
+                            ->label('Weboldal típusa'),
+                        TextInput::make('industry')
+                            ->label('Iparág'),
+                        Select::make('classification')
+                            ->options([
+                                'U1' => 'U1',
+                                'U2' => 'U2',
+                                'U3' => 'U3',
+                                'U4' => 'U4',
+                            ])
+                            ->default('U1')
+                            ->label('Minősítés'),
                         Textarea::make('hosting_info')->label('Tárhely infó')->columnSpanFull(),
                         DatePicker::make('last_update_date')->label('Utolsó frissítés'),
                         DatePicker::make('next_update_date')->required()->label('Következő frissítés'),
