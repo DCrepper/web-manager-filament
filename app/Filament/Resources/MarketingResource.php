@@ -157,7 +157,7 @@ final class MarketingResource extends Resource
             ->headerActions([
                 ExportAction::make()
                     ->label('Marketing exportálása')
-                    ->icon('heroicon-o-download')
+
                     ->exporter(MarketingExporter::class)
                     ->successNotificationTitle('Sikeres exportálás'),
 
