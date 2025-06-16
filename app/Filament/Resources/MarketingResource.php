@@ -4,19 +4,23 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use Filament\Schemas\Schema;
-use Filament\Actions\EditAction;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
+use App\Filament\Exports\MarketingExporter;
 use App\Filament\Resources\MarketingResource\Pages\CreateMarketing;
 use App\Filament\Resources\MarketingResource\Pages\EditMarketing;
 use App\Filament\Resources\MarketingResource\Pages\ListMarketings;
 use App\Models\Marketing;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ExportAction;
+use Filament\Actions\Exports\Models\Export;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\Summarizers\Average;
 use Filament\Tables\Columns\Summarizers\Range;
 use Filament\Tables\Columns\TextColumn;
@@ -29,7 +33,7 @@ final class MarketingResource extends Resource
 {
     protected static ?string $model = Marketing::class;
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Schema $schema): Schema
     {
@@ -150,7 +154,16 @@ final class MarketingResource extends Resource
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->label('Marketing exportálása')
+                    ->icon('heroicon-o-download')
+                    ->exporter(MarketingExporter::class)
+                    ->successNotificationTitle('Sikeres exportálás')
+                    ->successNotificationBody(fn (Export $export) => MarketingExporter::getCompletedNotificationBody($export)),
+            ])
+            ->defaultSort('created_at', 'desc');
     }
 
     public static function getRelations(): array

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\ProjectExporter;
+use App\Filament\Imports\ProjectImporter;
 use App\Filament\Resources\ProjectResource\Pages\CreateProject;
 use App\Filament\Resources\ProjectResource\Pages\EditProject;
 use App\Filament\Resources\ProjectResource\Pages\ListProjects;
@@ -14,6 +16,10 @@ use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ExportAction;
+use Filament\Actions\Exports\Models\Export;
+use Filament\Actions\ImportAction;
+use Filament\Actions\Imports\Models\Import;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
@@ -177,6 +183,15 @@ final class ProjectResource extends Resource
                 TextColumn::make('website_url')
                     ->label('Weboldal URL')
                     ->searchable(),
+                TextColumn::make('industry')
+                    ->label('Iparág')
+                    ->searchable(),
+                TextColumn::make('website_type')
+                    ->label('Weboldal típusa')
+                    ->sortable(),
+                TextColumn::make('classification')
+                    ->label('Minősítés')
+                    ->sortable(),
                 TextColumn::make('last_update_date')
                     ->label('Utolsó frissítés')
                     ->date()
@@ -276,6 +291,20 @@ final class ProjectResource extends Resource
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                ImportAction::make()
+                    ->label('Projekt importálása')
+                    ->icon('heroicon-o-upload')
+                    ->importer(ProjectImporter::class)
+                    ->successNotificationTitle('Sikeres importálás')
+                    ->successNotificationBody(fn (Import $import) => ProjectImporter::getCompletedNotificationBody($import)),
+                ExportAction::make()
+                    ->label('Projekt exportálása')
+                    ->icon('heroicon-o-download')
+                    ->exporter(ProjectExporter::class)
+                    ->successNotificationTitle('Sikeres exportálás')
+                    ->successNotificationBody(fn (Export $export) => ProjectExporter::getCompletedNotificationBody($export)),
             ]);
     }
 

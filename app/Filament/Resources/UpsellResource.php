@@ -4,19 +4,24 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use Filament\Schemas\Schema;
-use Filament\Actions\EditAction;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
+use App\Filament\Exports\UpsellExporter;
+use App\Filament\Imports\UpsellImporter;
 use App\Filament\Resources\UpsellResource\Pages\CreateUpsell;
 use App\Filament\Resources\UpsellResource\Pages\EditUpsell;
 use App\Filament\Resources\UpsellResource\Pages\ListUpsells;
 use App\Models\Project;
 use App\Models\Upsell;
 use App\Models\UpsellCategory;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ExportAction;
+use Filament\Actions\ImportAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\Summarizers\Average;
 use Filament\Tables\Columns\Summarizers\Range;
@@ -29,7 +34,7 @@ final class UpsellResource extends Resource
 {
     protected static ?string $model = Upsell::class;
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Schema $schema): Schema
     {
@@ -123,6 +128,19 @@ final class UpsellResource extends Resource
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
+            ])
+            ->defaultSort('created_at', 'desc')
+            ->headerActions([
+                ImportAction::make()
+                    ->model(self::$model)
+                    ->importer(UpsellImporter::class)
+                    ->label('Importálás')
+                    ->icon('heroicon-o-arrow-down-tray'),
+                ExportAction::make()
+                    ->model(self::$model)
+                    ->exporter(UpsellExporter::class)
+                    ->label('Exportálás')
+                    ->icon('heroicon-o-arrow-up-tray'),
             ]);
     }
 
