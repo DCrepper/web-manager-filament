@@ -293,13 +293,13 @@ final class ProjectResource extends Resource
             ->headerActions([
                 ImportAction::make()
                     ->label('Projekt importálása')
-                    ->icon('heroicon-o-upload')
+
                     ->importer(ProjectImporter::class)
                     ->successNotificationTitle('Sikeres importálás'),
 
                 ExportAction::make()
                     ->label('Projekt exportálása')
-                    ->icon('heroicon-o-download')
+
                     ->exporter(ProjectExporter::class)
                     ->successNotificationTitle('Sikeres exportálás'),
 
