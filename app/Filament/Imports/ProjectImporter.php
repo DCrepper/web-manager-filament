@@ -27,24 +27,17 @@ final class ProjectImporter extends Importer
                 ->rules(['in:weboldal,webshop']),
             ImportColumn::make('industry')
                 ->rules(['max:255']),
-            ImportColumn::make('classification')
-                ->requiredMapping()
-                ->rules(['required']),
+            ImportColumn::make('classification'),
             ImportColumn::make('last_update_date')
                 ->rules(['date']),
             ImportColumn::make('next_update_date')
                 ->rules(['date']),
             ImportColumn::make('update_frequency'),
             ImportColumn::make('contract_status')
-                ->requiredMapping()
-                ->boolean()
-                ->rules(['required', 'boolean']),
+                ->boolean(),
             ImportColumn::make('contract_amount')
-                ->numeric()
-                ->rules(['integer']),
-            ImportColumn::make('currency')
-                ->requiredMapping()
-                ->rules(['required', 'max:3']),
+                ->numeric(),
+            ImportColumn::make('currency'),
             ImportColumn::make('notes'),
             ImportColumn::make('upsells'),
         ];
@@ -64,7 +57,7 @@ final class ProjectImporter extends Importer
     public function resolveRecord(): Project
     {
         return Project::firstOrNew([
-            'webite_url' => $this->data['webite_url'],
+            'website_url' => $this->data['website_url'],
         ]);
     }
 }
