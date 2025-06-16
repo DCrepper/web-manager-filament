@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Imports;
 
+use App\Models\Project;
 use App\Models\Upsell;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
@@ -47,8 +48,11 @@ final class UpsellImporter extends Importer
 
     public function resolveRecord(): Upsell
     {
+        $project = Project::where('website_url', $this->data['project'])
+            ->firstOrFail();
+
         return Upsell::firstOrNew([
-            'website_url' => $this->data['website_url'],
+            'project_id' => $project->id,
         ]);
     }
 }
