@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Filament\Imports;
 
-use App\Models\Upsell;
 use App\Models\Project;
+use App\Models\Upsell;
 use App\Models\UpsellCategory;
-use Illuminate\Support\Number;
-use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\ImportColumn;
+use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
+use Illuminate\Support\Number;
 
 final class UpsellImporter extends Importer
 {
