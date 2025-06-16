@@ -27,10 +27,7 @@ final class UpsellImporter extends Importer
                 ->rules(['required']),
             ImportColumn::make('description')
                 ->rules(['max:255']),
-            ImportColumn::make('price')
-                ->integer()
-                ->requiredMapping()
-                ->rules(['required', 'integer']),
+            ImportColumn::make('price'),
             ImportColumn::make('status')
                 ->requiredMapping()
                 ->rules(['required']),
