@@ -88,8 +88,7 @@ final class ProjectResource extends Resource
                             ]),
                         TextInput::make('contract_amount')->numeric()->prefix('Ft')->label('Szerződés összege'),
                         RichEditor::make('notes')
-                            ->label('Megjegyzések')
-                            ->limit(500),
+                            ->label('Megjegyzések'),
                         Toggle::make('contract_status')->label('Érvényes szerződés'),
                         Select::make('status')
                             ->options([
