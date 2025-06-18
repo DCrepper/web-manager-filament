@@ -83,7 +83,8 @@ namespace App\Models{
  * @property \Carbon\CarbonImmutable|null $last_update_date
  * @property \Carbon\CarbonImmutable|null $next_update_date
  * @property string|null $update_frequency
- * @property int $contract_status
+ * @property bool $contract_status
+ * @property string $status
  * @property int|null $contract_amount
  * @property string $currency
  * @property string|null $notes
@@ -110,6 +111,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Project whereLastUpdateDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Project whereNextUpdateDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Project whereNotes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Project whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Project whereUpdateFrequency($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Project whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Project whereUpsells($value)

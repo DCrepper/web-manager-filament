@@ -20,6 +20,7 @@ use Filament\Actions\ExportAction;
 use Filament\Actions\ImportAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -85,7 +86,18 @@ final class ProjectResource extends Resource
                                 'heti' => 'Heti', 'kétheti' => 'Kétheti', 'havi' => 'Havi', 'negyedéves' => 'Negyedéves', 'féléves' => 'Féléves', 'éves' => 'Éves', 'igény szerint' => 'Igény szerint',
                             ]),
                         TextInput::make('contract_amount')->numeric()->prefix('Ft')->label('Szerződés összege'),
+                        RichEditor::make('notes')
+                            ->label('Megjegyzések')
+                            ->limit(500),
                         Toggle::make('contract_status')->label('Érvényes szerződés'),
+                        Select::make('status')
+                            ->options([
+                                'active' => 'Aktív',
+                                'inactive' => 'Inaktív',
+                            ])
+                            ->default('active')
+                            ->required()
+                            ->label('Státusz'),
                     ])->columns(2),
 
                 Section::make('Upsell Lehetőségek')
@@ -102,7 +114,6 @@ final class ProjectResource extends Resource
                                     ->label('Leírás')
                                     ->maxLength(255),
                                 TextInput::make('price')
-                                    ->required()
                                     ->label('Ár')
                                     ->postfix('Ft')
                                     ->numeric(),
@@ -203,6 +214,17 @@ final class ProjectResource extends Resource
                 IconColumn::make('contract_status')
                     ->label('Szerződés státusz')
                     ->boolean(),
+                TextColumn::make('status')
+                    ->label('Státusz')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'active' => 'success',
+                        'inactive' => 'danger',
+                    })
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'active' => 'Aktív',
+                        'inactive' => 'Inaktív',
+                    }),
                 TextColumn::make('contract_amount')
                     ->label('Szerződés összege')
                     ->formatStateUsing(fn ($state) => Number::currency($state, 'HUF', 'hu_HU', 0))
@@ -279,6 +301,12 @@ final class ProjectResource extends Resource
                         };
                     })
                     ->label('Következő frissítés'),
+                SelectFilter::make('status')
+                    ->options([
+                        'active' => 'Aktív',
+                        'inactive' => 'Inaktív',
+                    ])
+                    ->label('Státusz'),
 
             ], layout: FiltersLayout::AboveContent)
             ->defaultSort('created_at', 'desc')

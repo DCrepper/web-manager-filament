@@ -15,6 +15,8 @@ final class Project extends Model
         'next_update_date' => 'date',
         'last_update_date' => 'date',
         'contract_amount' => 'integer',
+        'contract_status' => 'boolean',
+        'status' => 'string',
         'upsells' => 'array',
         'marketing' => 'array',
     ];

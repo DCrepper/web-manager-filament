@@ -52,11 +52,17 @@ final class UpsellResource extends Resource
                     ->label('Leírás')
                     ->maxLength(255),
                 TextInput::make('price')
-                    ->required()
                     ->label('Ár')
                     ->postfix('Ft')
                     ->numeric(),
-                TextInput::make('status')
+                Select::make('status')
+                    ->options([
+                        'Lehetőség' => 'Lehetőség',
+                        'Van' => 'Van',
+                        'Később' => 'Később',
+                        'Nem kell' => 'Nem kell',
+                    ])
+                    ->label('Státusz')
                     ->required(),
             ]);
     }
