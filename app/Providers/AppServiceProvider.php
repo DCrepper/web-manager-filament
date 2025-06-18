@@ -10,6 +10,8 @@ use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Table;
 use Illuminate\Support\ServiceProvider;
 
 final class AppServiceProvider extends ServiceProvider
@@ -45,5 +47,11 @@ final class AppServiceProvider extends ServiceProvider
 
         Section::configureUsing(fn (Section $section) => $section
             ->columnSpanFull());
+        Table::configureUsing(function (Table $table): void {
+            $table
+                ->reorderableColumns()
+                ->filtersLayout(FiltersLayout::AboveContentCollapsible)
+                ->paginationPageOptions([10, 25, 50]);
+        });
     }
 }

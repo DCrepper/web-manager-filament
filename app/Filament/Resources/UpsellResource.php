@@ -25,6 +25,7 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\Summarizers\Average;
 use Filament\Tables\Columns\Summarizers\Range;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
@@ -96,6 +97,7 @@ final class UpsellResource extends Resource
                     ->summarize([
                         Average::make(),
                         Range::make(),
+                        Sum::make(),
                     ])
                     ->sortable(),
                 TextColumn::make('status')
