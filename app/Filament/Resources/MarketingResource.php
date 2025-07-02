@@ -81,7 +81,7 @@ final class MarketingResource extends Resource
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('monthly_management_fee')
-                    ->formatStateUsing(fn ($state) => Number::currency($state, 'HUF', 'hu_HU', 0))
+                    ->formatStateUsing(fn ($state) => Number::currency((int) $state, 'HUF', 'hu_HU', 0))
                     ->label('Havi menedzsment díj')
                     ->summarize([
                         Average::make(),
@@ -91,7 +91,7 @@ final class MarketingResource extends Resource
                     ->sortable(),
                 TextColumn::make('advertising_cost')
                     ->label('Hirdetési költés')
-                    ->formatStateUsing(fn ($state) => Number::currency($state, 'HUF', 'hu_HU', 0))
+                    ->formatStateUsing(fn ($state) => Number::currency((int) $state, 'HUF', 'hu_HU', 0))
                     ->summarize([
                         Average::make(),
                         Range::make(),
